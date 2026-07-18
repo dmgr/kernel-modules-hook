@@ -7,5 +7,4 @@ Target = usr/lib/modules/*/vmlinuz
 [Action]
 Description = Saving Linux kernel modules...
 When = PreTransaction
-Depends = rsync
-Exec = /bin/sh -c 'KVER="${KVER:-$(uname -r)}"; if test -e "/usr/lib/modules/${KVER}"; then rsync -AHXal --delete-after "/usr/lib/modules/${KVER}" /usr/lib/modules/backup/; fi'
+Exec = /bin/sh -exc 'cd /usr/lib/modules; KVER=${KVER:-$(uname -r)}; if [ -d "$KVER" ]; then rm -rf .backup; mkdir -p .backup; cp -al -- "$KVER" .backup/; fi'
